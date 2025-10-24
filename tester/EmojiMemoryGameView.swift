@@ -5,7 +5,7 @@
 //  Created by USER1 on 10/1/25.
 //
 
-// command shift l - for symbols
+// THIS IS THE VIEW FILE
 
 import SwiftUI
 
@@ -14,23 +14,35 @@ struct EmojiMemoryGameView: View {
     @State var deck: [String] = []
     
     var body: some View {
-        VStack{
-            // adding the title ontop of screen
-            Text("Memorize!").font(.largeTitle)
-            // this allows you to scroll through screen
-            ScrollView{
-                cards.animation(.default, value: viewModel.cards)
-            }
-            // space between the grid and the buttons
-            Spacer()
+        VStack {
+            // .themeName called the specific game color
+            Text(viewModel.themeName)
+                .font(.largeTitle).bold()
+                .padding(.top, 4)
 
-            Button("Shuffle") {
-                viewModel.shuffle()
+            // Grid
+            ScrollView {
+                cards
+                    .animation(.default, value: viewModel.cards)
             }
+
+            // Footer controls
+            HStack {
+                // calls the newGame() method
+                Button("New Game") { viewModel.newGame() }
+                Spacer()
+                // calls the score method logic
+                Text("Score: \(viewModel.score)")
+                    .font(.headline)
+                Spacer()
+                // uses teh shuffle method like from lec 5
+                Button("Shuffle") { viewModel.shuffle() }
+            }
+            .padding(.vertical, 8)
         }
-
         .padding()
     }
+
     
     var cards: some View{
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0) {
@@ -44,7 +56,7 @@ struct EmojiMemoryGameView: View {
                         }
                 }
             }
-            .foregroundColor(.orange)
+        .foregroundColor(viewModel.themeColor)
     }
 
     struct CardView: View{
