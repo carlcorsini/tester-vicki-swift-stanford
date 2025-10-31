@@ -10,6 +10,7 @@
 import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
+    typealias Card = MemoryGame<String>.Card
     // creating the 6 themes
     private static let allThemes: [Theme<String>] = [
         Theme(name: "Halloween",
@@ -44,7 +45,7 @@ class EmojiMemoryGame: ObservableObject {
         let picks = theme.emojis.shuffled()
         
         // limits number of pairs to the theme's defined amount
-        let pairs = max(1, min(theme.numberOfPairs, picks.count))
+        let pairs = 2
         
         // Select just the needed number of emojis
         let chosen = Array(picks.prefix(pairs))
@@ -93,7 +94,7 @@ class EmojiMemoryGame: ObservableObject {
 
     func choose(_ card: MemoryGame<String>.Card) {
         // Flip the card with animation
-        withAnimation {
+        withAnimation(.easeInOut(duration: 1)) {
             model.choose(card)
 //            model.processMatch()
         }
@@ -105,7 +106,7 @@ class EmojiMemoryGame: ObservableObject {
                 try? await Task.sleep(for: .seconds(0.6))
                 
                 // Process the match/mismatch with animation
-                withAnimation {
+                withAnimation(.easeInOut(duration: 3)) {
                     model.processMatch()
                 }
             }
